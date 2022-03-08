@@ -3,19 +3,23 @@ import os
 import random
 from push_swap import Push_swap
 
+OK = '\033[92m'
+KO = '\033[91m'
+ENDC = '\033[0m'
+
 def compile():
 	if subprocess.run(["make", "fclean", "-C", ".."], capture_output=True).returncode:
-		print("KO: \"make fclean\"")
+		print(KO, "KO: \"make fclean\"", ENDC)
 		exit(1)
 
 	if subprocess.run(["make", "-C", ".."], capture_output=True).returncode:
-		print("KO: \"make\"")
+		print(KO, "KO: \"make\"", ENDC)
 		exit(1)
 
 	if not os.path.exists("../push_swap"):
-		print("KO: \"executable \"push_swap\" not found\"")
+		print(KO, "KO: \"executable \"push_swap\" not found\"", ENDC)
 		exit(1)
-	print("OK")
+	print(OK, "OK", ENDC)
 
 def	test_error():
 	path = "test_files/test_error/"
@@ -24,9 +28,9 @@ def	test_error():
 		args = file.read().split()
 		out = subprocess.run([".././push_swap"] + args, capture_output=True)
 		if out.stdout.decode("ascii") or out.stderr.decode("ascii") != "Error\n":
-			print("KO: \"./push_swap", " ".join(args) + "\"")
+			print(KO, "KO: \"./push_swap", " ".join(args) + "\"", ENDC)
 		else:
-			print("OK")
+			print(OK, "OK", ENDC)
 		file.close()
 
 def test_identity():
@@ -36,9 +40,9 @@ def test_identity():
 		args = file.read().split()
 		out = subprocess.run([".././push_swap"] + args, capture_output=True)
 		if out.stdout.decode("ascii") or out.stderr.decode("ascii"):
-			print("KO: \"./push_swap", " ".join(args) + "\"")
+			print(KO, "KO: \"./push_swap", " ".join(args) + "\"", ENDC)
 		else:
-			print("OK")
+			print(OK, "OK", ENDC)
 		file.close()
 
 def test_sort(N, T):
@@ -78,12 +82,12 @@ def test_sort(N, T):
 		if ps.a != sorted([int(x) for x in arr]) or len(ps.b):
 			sorting = False
 	if sorting:
-		print("sorting OK")
-		print("Test cases = ", T)
-		print("Worst = ", max(count))
-		print("Average = ", int(sum(count)/len(count)))
+		print(OK, "OK", ENDC)
+		print("Test cases: ", T)
+		print("Worst: ", max(count))
+		print("Average: ", int(sum(count)/len(count)))
 	else:
-		print("sorting KO")
+		print(KO, "KO: not sorted", ENDC)
 	
 
 def main():
@@ -102,7 +106,7 @@ def main():
 	print("\n---TEST 100---")
 	test_sort(100, 100)
 	print("\n---TEST 500---")
-	test_sort(500, 20)
+	test_sort(500, 10)
 	subprocess.run(["make", "fclean", "-C", ".."], capture_output=True)
 
 if __name__ == "__main__":
