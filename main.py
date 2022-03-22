@@ -79,6 +79,8 @@ def test_sort(N, T):
 				ps.rrb()
 			elif op == "rrr":
 				ps.rrr()
+			else:
+				sorted = False
 		if ps.a != sorted([int(x) for x in arr]) or len(ps.b):
 			sorting = False
 	if sorting:
